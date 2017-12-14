@@ -15,7 +15,7 @@ namespace App\Manager;
  */
 class EffectsManager {
     public function applyEffect($id, $content) {
-        $id = "App\Manager\Effects\\".$id."Effect";
+        $id = "App\Manager\Effects\lib\\".$id."Effect";
         if (class_exists($id)) {
             $effect = new $id();
             return ['res' => true, 'content' => $effect->applyEffect($content)];

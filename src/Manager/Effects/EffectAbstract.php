@@ -13,8 +13,9 @@ namespace App\Manager\Effects;
  *
  * @author msk
  */
-abstract class EffectAbstract {
+abstract class EffectAbstract implements EffectInterface {
     protected $multiplier=1;
+    protected $family='fx';
     
     function getMultiplier() {
         return $this->multiplier;
@@ -22,5 +23,13 @@ abstract class EffectAbstract {
 
     function setMultiplier($multiplier) {
         $this->multiplier = $multiplier;
+    }
+    
+    function getFamily() {
+        return $this->family;
+    }
+
+    function setFamily($family) {
+        $this->family = $family;
     }
 }

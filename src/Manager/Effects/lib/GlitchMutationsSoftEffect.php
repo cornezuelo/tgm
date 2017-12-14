@@ -6,14 +6,16 @@
  * and open the template in the editor.
  */
 
-namespace App\Manager\Effects;
+namespace App\Manager\Effects\lib;
 
 /**
  * Description of GlitchMutationsSoftEffect
  *
  * @author msk
  */
-class GlitchMutationsSoftEffect extends EffectAbstract implements EffectInterface {
+class GlitchMutationsSoftEffect extends \App\Manager\Effects\EffectAbstract {
+    protected $family = 'glitch';
+    
     public function applyEffect($content) {	
 	$content_glitched = $content;
 	$mutations = mt_rand(1,3);
