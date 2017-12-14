@@ -1,3 +1,7 @@
 #index:
 #    path: /
 #    defaults: { _controller: 'App\Controller\DefaultController::index' }
+debug_index:
+    path: /
+    controller: App\Controller\DebugController::index
+    
