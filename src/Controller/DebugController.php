@@ -23,9 +23,16 @@ class DebugController {
         $ex = pathinfo($uri)['extension'];
         $path = uniqid().'.'.$ex;
         file_put_contents($path, $aux_content);
-        $this->convertImage($path, $path.'.jpg', 100);
+        $effectsManager->convertImageToJPG($path, $path.'.jpg', 100);
         $content = file_get_contents($path.'.jpg');
-        $fxs = ['GlitchMutationsSoft','GlitchMutationsNormal','GlitchMutationsHard'];
+        unlink($path);
+        unlink($path.'.jpg');
+        
+        $aux = $effectsManager->applyEffectsRandom($content,rand(1,3),false);
+        $response .= '<h2>'.  implode(',', $aux['fxs']).'</h2>';
+        $response .= '<img src="data: image/jpeg;base64,'.base64_encode($aux['content']).'"><hr>';
+        
+        $fxs = $effectsManager->getEffects();       
         foreach ($fxs as $fx) {
             $response .= '<h2>'.$fx.'</h2>';
             $src = $effectsManager->applyEffect($fx,$content);
@@ -35,37 +42,14 @@ class DebugController {
                 $response .= '</p>';
             }
             elseif (isset($src['content'])) {
-                $response .= '<img src="data: image/jpeg;base64,'.$src['content'].'">';
+                $response .= '<img src="data: image/jpeg;base64,'.base64_encode($src['content']).'">';
             }
             else {
                 $response .= '<p style="color:red"><b>Unknown Error.</b></p>';
             }            
             $response .= '<hr>';
         }
+        
         return new Response($response);
-    }
-    
-    public function convertImage($originalImage, $outputImage, $quality)
-    {
-        // jpg, png, gif or bmp?
-        $exploded = explode('.',$originalImage);
-        $ext = $exploded[count($exploded) - 1]; 
-
-        if (preg_match('/jpg|jpeg/i',$ext))
-            $imageTmp=imagecreatefromjpeg($originalImage);
-        else if (preg_match('/png/i',$ext))
-            $imageTmp=imagecreatefrompng($originalImage);
-        else if (preg_match('/gif/i',$ext))
-            $imageTmp=imagecreatefromgif($originalImage);
-        else if (preg_match('/bmp/i',$ext))
-            $imageTmp=imagecreatefrombmp($originalImage);
-        else
-            return 0;
-
-        // quality is a value from 0 (worst) to 100 (best)
-        imagejpeg($imageTmp, $outputImage, $quality);
-        imagedestroy($imageTmp);
-
-        return 1;
     }
 }
