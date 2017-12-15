@@ -31,6 +31,7 @@ class ImagefilterBrightSoftEffect extends \App\Manager\Effects\EffectAbstract {
         imagejpeg($im, $path, 100);
         $content = file_get_contents($path);
         unlink($path);
+        imagedestroy($im);
 	return $content;
     }
 

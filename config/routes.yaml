@@ -1,7 +1,9 @@
 #index:
 #    path: /
 #    defaults: { _controller: 'App\Controller\DefaultController::index' }
-debug_index:
+twitter:
+    path: /twitter
+    controller: App\Controller\IndexController::twitter
+index:
     path: /
-    controller: App\Controller\DebugController::index
-    
+    controller: App\Controller\IndexController::index    

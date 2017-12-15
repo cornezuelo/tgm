@@ -13,14 +13,14 @@ namespace App\Manager\Effects\lib;
  *
  * @author msk
  */
-class ImagefilterNegateEffect extends \App\Manager\Effects\EffectAbstract {
-    protected $family = 'negative';
+class ImagefilterPixelateEffect extends \App\Manager\Effects\EffectAbstract {
+    protected $family = 'pixel';
     
     public function applyEffect($content) {
         $path = uniqid().'_tmp_'.rand(1,9999).'.jpg';
         file_put_contents($path,$content);
         $im = imagecreatefromjpeg($path);
-        imagefilter($im, IMG_FILTER_NEGATE);
+        imagefilter($im, IMG_FILTER_PIXELATE,rand(1,10),rand(0,1));
         imagejpeg($im, $path, 100);
         $content = file_get_contents($path);
         unlink($path);

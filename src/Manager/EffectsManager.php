@@ -9,6 +9,7 @@
 namespace App\Manager;
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 
 /**
  * Description of EffectsManager
@@ -20,7 +21,9 @@ class EffectsManager {
         $class = "App\Manager\Effects\lib\\".$id;
         if (class_exists($class)) {
             $effect = new $class();
-            return ['res' => true, 'content' => $effect->applyEffect($content)];
+            $content = $effect->applyEffect($content);            
+            $return = ['res' => true, 'content' => $content];            
+            return $return;
         } else  {
             return ['res' => false, 'error' => "The effect doesn't exist."];
         }

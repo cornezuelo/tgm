@@ -17,6 +17,8 @@ abstract class EffectAbstract implements EffectInterface {
     protected $multiplier=1;
     protected $family='fx';
     
+    function applyEffect($content) { }
+    
     function getMultiplier() {
         return $this->multiplier;
     }
