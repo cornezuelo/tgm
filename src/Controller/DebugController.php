@@ -10,18 +10,24 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use App\Manager\EffectsManager;
+use App\Manager\RedditCrawlerManager;
 /**
  * Description of DebugController
  *
  * @author msk
  */
 class DebugController {
-    public function index(EffectsManager $effectsManager) {
+    public function index(EffectsManager $effectsManager, RedditCrawlerManager $redditCrawlerManager) {
         $response = '';
-        $uri = "http://www.indiewire.com/wp-content/uploads/2017/07/rick-and-morty.png";
-        $aux_content = file_get_contents($uri);
-        $ex = pathinfo($uri)['extension'];
-        $path = uniqid().'.'.$ex;
+        $crawl = $redditCrawlerManager->crawl();
+        $uri = $crawl['uri'];
+        $aux_content = $crawl['content'];
+        $pathinfo = pathinfo($uri);
+        $path = uniqid();
+        if (isset($pathinfo['extension'])) {
+          $path .= '.'.$pathinfo['extension'];  
+        }
+        
         file_put_contents($path, $aux_content);
         $effectsManager->convertImageToJPG($path, $path.'.jpg', 100);
         $content = file_get_contents($path.'.jpg');
